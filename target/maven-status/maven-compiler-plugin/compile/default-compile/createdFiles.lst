@@ -1,0 +1,5 @@
+com\expensetracker\model\expense.class
+com\expensetracker\GUI\ExpenseTrackerGUI.class
+com\expensetracker\model\category.class
+com\expensetracker\Main.class
+com\expensetracker\UTIL\DatabaseConnection.class
