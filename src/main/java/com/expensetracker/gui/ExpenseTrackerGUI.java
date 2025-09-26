@@ -54,7 +54,7 @@ public class ExpenseTrackerGUI extends JFrame {
         setLocationRelativeTo(null);
 
         // Category table
-        String[] categoryColumnNames = { "ID", "Name", "Description", "Created At", "Updated At" };
+        String[] categoryColumnNames = { "ID", "Name", "Created At", "Updated At" };
         categoryTableModel = new DefaultTableModel(categoryColumnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -150,14 +150,6 @@ public class ExpenseTrackerGUI extends JFrame {
         gbc.gridx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         inputPanel.add(categoryNameField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.NONE;
-        inputPanel.add(new JLabel("Description:"), gbc);
-        gbc.gridx = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        inputPanel.add(new JScrollPane(categoryDescriptionArea), gbc);
 
         // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout());
@@ -267,7 +259,6 @@ public class ExpenseTrackerGUI extends JFrame {
     // Category methods
     private void addCategory() {
         String name = categoryNameField.getText().trim();
-        String description = categoryDescriptionArea.getText().trim();
 
         if (name.isEmpty()) {
             showMessage("Category name is required!");
@@ -277,7 +268,6 @@ public class ExpenseTrackerGUI extends JFrame {
         try {
             Category category = new Category();
             category.setName(name);
-            category.setDescription(description);
             dao.createCategory(category);
             clearCategoryFields();
             loadCategories();
@@ -302,13 +292,11 @@ public class ExpenseTrackerGUI extends JFrame {
         }
 
         int id = (int) categoryTable.getValueAt(row, 0);
-        String description = categoryDescriptionArea.getText().trim();
 
         try {
             Category category = dao.getCategoryById(id);
             if (category != null) {
                 category.setName(name);
-                category.setDescription(description);
                 dao.updateCategory(category);
                 clearCategoryFields();
                 loadCategories();
@@ -362,7 +350,6 @@ public class ExpenseTrackerGUI extends JFrame {
             Object[] row = {
                     c.getId(),
                     c.getName(),
-                    c.getDescription(),
                     c.getCreatedAt(),
                     c.getUpdatedAt()
             };
@@ -374,14 +361,11 @@ public class ExpenseTrackerGUI extends JFrame {
         int row = categoryTable.getSelectedRow();
         if (row != -1) {
             categoryNameField.setText(categoryTableModel.getValueAt(row, 1).toString());
-            Object desc = categoryTableModel.getValueAt(row, 2);
-            categoryDescriptionArea.setText(desc != null ? desc.toString() : "");
         }
     }
 
     private void clearCategoryFields() {
         categoryNameField.setText("");
-        categoryDescriptionArea.setText("");
         categoryTable.clearSelection();
     }
 
